@@ -274,6 +274,30 @@ pkill plank; (plank &)
 
 ---
 
+## ⚡ Tối ưu hiệu năng / Performance tuning
+
+**🇻🇳** Làm cho bản dựng **nhẹ & mượt hơn**, đặc biệt khi RAM ít (≤ 4–8 GB) hoặc
+chạy trong **VirtualBox**. Script `optimize.sh` (chạy lại được nhiều lần): dọn
+ứng dụng tự khởi động thừa (per-user, có sao lưu, không cần root), bật **zram**
+(nén RAM làm swap, qua `zram-tools` — hợp với sysVinit của MX), tinh chỉnh
+`sysctl`, và in hướng dẫn tăng tài nguyên VM.
+
+```bash
+./optimize.sh
+```
+
+> Hướng dẫn đầy đủ + cách hoàn tác: [`docs/optimization.md`](docs/optimization.md).
+> Việc tác động lớn nhất nếu chạy trong VM là **tăng RAM/CPU/Video Memory cho
+> máy ảo** — phần này phải làm trong VirtualBox (xem docs).
+
+**🇬🇧** Make the build **lighter & smoother**, especially on low-RAM machines
+(≤ 4–8 GB) or inside **VirtualBox**. `optimize.sh` (idempotent): trims redundant
+autostart apps (per-user, backed up, no root), enables **zram** (compressed-RAM
+swap via `zram-tools`, sysVinit-friendly), tunes `sysctl`, and prints VM-tuning
+guidance. Full docs & rollback: [`docs/optimization.md`](docs/optimization.md).
+
+---
+
 ## 📁 Các tệp trong dự án / Project files
 
 **🇻🇳 / 🇬🇧**
@@ -300,6 +324,8 @@ pkill plank; (plank &)
 | `assets/ms-office.svg` | Icon "Microsoft Office" kiểu squircle macOS / the macOS-style Office icon |
 | `assets/office-app-logos/` | 4 logo Office gốc (Word/Excel/PowerPoint/OneNote) để ghép icon / source Office logos used to build the icon |
 | `install-chrome.sh` | Cài Google Chrome + ghim vào dock / installs Google Chrome + pins it to the dock |
+| `optimize.sh` | Tối ưu hiệu năng: dọn autostart, bật zram, sysctl, lời khuyên VM / performance tuning: trims autostart, enables zram, sysctl, VM advice |
+| `docs/optimization.md` | Tài liệu tối ưu hiệu năng & cách hoàn tác / performance tuning docs & rollback |
 | `apply-settings.sh` | Áp dụng cài đặt XFCE/Plank (được install.sh gọi) / applies XFCE/Plank settings (called by install.sh) |
 | `uninstall.sh` | Hoàn tác mọi thay đổi / reverts all changes |
 | `assets/screenshots/` | Ảnh chụp verify Spotlight / Spotlight verification screenshots |
