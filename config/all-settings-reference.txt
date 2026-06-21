@@ -1,0 +1,74 @@
+######## XFWM4 ########
+xfwm4/theme = WhiteSur-Light
+xfwm4/button_layout = CHM|O
+xfwm4/title_font = SF Pro Display Medium 10
+xfwm4/title_alignment = center
+######## XSETTINGS ########
+xsettings /Net/ThemeName = WhiteSur-Light
+xsettings /Net/IconThemeName = WhiteSur-light
+xsettings /Gtk/CursorThemeName = WhiteSur-cursors
+xsettings /Gtk/FontName = SF Pro Text 10
+######## DESKTOP BACKDROP ########
+/backdrop/screen0/monitorVirtual1/workspace0/color-style  0
+/backdrop/screen0/monitorVirtual1/workspace0/image-style  5
+/backdrop/screen0/monitorVirtual1/workspace0/last-image   /home/tomvu/.local/share/backgrounds/WhiteSur-light.jpg
+/backdrop/single-workspace-mode                           true
+/backdrop/single-workspace-number                         0
+######## PLANK (dconf) ########
+[docks/dock1]
+alignment='center'
+dock-items=['finder.dockitem', 'org.xfce.orage.dockitem', 'xfce4-web-browser.dockitem', 'vlc.dockitem', 'xfce4-mail-reader.dockitem', 'org.strawberrymusicplayer.strawberry.dockitem', 'org.nomacs.ImageLounge.dockitem', 'trash.dockitem']
+hide-mode='none'
+icon-size=48
+position='bottom'
+theme='WhiteSur-Light'
+zoom-enabled=true
+zoom-percent=150
+######## PLANK launchers ########
+--- /home/tomvu/.config/plank/dock1/launchers/finder.dockitem ---
+[PlankDockItemPreferences]
+Launcher=file:///home/tomvu/.local/share/applications/finder.desktop
+--- /home/tomvu/.config/plank/dock1/launchers/org.nomacs.ImageLounge.dockitem ---
+[PlankDockItemPreferences]
+Launcher=file:///usr/share/applications/org.nomacs.ImageLounge.desktop
+--- /home/tomvu/.config/plank/dock1/launchers/org.strawberrymusicplayer.strawberry.dockitem ---
+[PlankDockItemPreferences]
+Launcher=file:///usr/share/applications/org.strawberrymusicplayer.strawberry.desktop
+--- /home/tomvu/.config/plank/dock1/launchers/org.xfce.orage.dockitem ---
+[PlankDockItemPreferences]
+Launcher=file:///usr/share/applications/org.xfce.orage.desktop
+--- /home/tomvu/.config/plank/dock1/launchers/trash.dockitem ---
+[PlankDockItemPreferences]
+Launcher=file:///home/tomvu/.local/share/applications/trash.desktop
+--- /home/tomvu/.config/plank/dock1/launchers/vlc.dockitem ---
+[PlankDockItemPreferences]
+Launcher=file:///usr/share/applications/vlc.desktop
+--- /home/tomvu/.config/plank/dock1/launchers/xfce4-mail-reader.dockitem ---
+[PlankDockItemPreferences]
+Launcher=file:///usr/share/applications/xfce4-mail-reader.desktop
+--- /home/tomvu/.config/plank/dock1/launchers/xfce4-web-browser.dockitem ---
+[PlankDockItemPreferences]
+Launcher=file:///usr/share/applications/xfce4-web-browser.desktop
+######## FINDER/TRASH .desktop ########
+--- finder.desktop ---
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Finder
+Comment=Open file manager
+Exec=thunar %F
+Icon=/home/tomvu/.local/share/icons/macOS-extra/finder.svg
+Terminal=false
+Categories=System;Utility;
+StartupNotify=true
+--- trash.desktop ---
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Trash
+Comment=Open Trash
+Exec=thunar trash:///
+Icon=user-trash
+Terminal=false
+Categories=System;Utility;
+StartupNotify=true

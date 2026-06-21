@@ -1,0 +1,82 @@
+/* macOS Spotlight-style list for the Pin-to-Dock picker (rofi -dmenu). */
+configuration {
+    show-icons: true;
+}
+
+* {
+    font:       "SF Pro Display 13";
+    fg:         #1d1d1fff;
+    bg:         #f6f6f8ff;
+    inbg:       #e8e8edff;
+    selbg:      #0a82ffff;
+    selfg:      #ffffffff;
+    subtle:     #00000070;
+    bordercol:  #0000002b;
+}
+
+window {
+    width:            560px;
+    location:         center;
+    border-radius:    18px;
+    background-color:  @bg;
+    border:           1px;
+    border-color:     @bordercol;
+    padding:          0px;
+}
+
+mainbox {
+    children:         [ inputbar, message, listview ];
+    padding:          10px;
+    spacing:          8px;
+    background-color: transparent;
+}
+
+inputbar {
+    background-color: @inbg;
+    border-radius:    12px;
+    padding:          10px 14px;
+    spacing:          8px;
+    children:         [ prompt, entry ];
+}
+
+prompt { text-color: @subtle; }
+
+entry {
+    text-color:        @fg;
+    placeholder:       "Tìm app để pin…";
+    placeholder-color: @subtle;
+}
+
+message  { background-color: transparent; padding: 0px 6px; }
+textbox  { text-color: @subtle; font: "SF Pro Text 10"; }
+
+listview {
+    lines:            9;
+    scrollbar:        false;
+    spacing:          2px;
+    background-color: transparent;
+}
+
+element {
+    padding:          8px 12px;
+    border-radius:    10px;
+    spacing:          12px;
+    background-color: transparent;
+    children:         [ element-icon, element-text ];
+}
+
+element selected { background-color: @selbg; }
+
+element-icon {
+    size:             30px;
+    vertical-align:   0.5;
+    background-color: transparent;
+}
+
+element-text {
+    text-color:       @fg;
+    vertical-align:   0.5;
+    background-color: transparent;
+}
+
+element selected element-text { text-color: @selfg; }

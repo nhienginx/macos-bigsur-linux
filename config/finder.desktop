@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Finder
+Comment=Open file manager
+Exec=thunar %F
+Icon=/home/tomvu/.local/share/icons/macOS-extra/finder.svg
+Terminal=false
+Categories=System;Utility;
+StartupNotify=true

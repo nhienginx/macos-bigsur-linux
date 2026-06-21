@@ -1,0 +1,9 @@
+[docks/dock1]
+alignment='center'
+dock-items=['finder.dockitem', 'org.xfce.orage.dockitem', 'xfce4-web-browser.dockitem', 'vlc.dockitem', 'xfce4-mail-reader.dockitem', 'org.strawberrymusicplayer.strawberry.dockitem', 'org.nomacs.ImageLounge.dockitem', 'trash.dockitem']
+hide-mode='none'
+icon-size=48
+position='bottom'
+theme='WhiteSur-Light'
+zoom-enabled=true
+zoom-percent=150

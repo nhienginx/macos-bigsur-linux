@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+"""pin-to-dock — chọn app từ danh sách (rofi, kiểu Spotlight) để PIN/UNPIN vào Plank.
+
+- App đã pin hiện dấu ✓ và xếp lên đầu; chọn lại để gỡ pin.
+- Hiện icon từng app. Tự tạo/xoá .dockitem, cập nhật gsettings, restart Plank.
+"""
+import ast, glob, os, subprocess, sys, time
+
+HOME = os.path.expanduser("~")
+SCHEMA = "net.launchpad.plank.dock.settings:/net/launchpad/plank/docks/dock1/"
+LAUNCHERS = f"{HOME}/.config/plank/dock1/launchers"
+APPDIRS = [f"{HOME}/.local/share/applications", "/usr/share/applications"]
+THEME = f"{HOME}/.config/rofi/pin-to-dock.rasi"
+os.makedirs(LAUNCHERS, exist_ok=True)
+
+
+def get_items():
+    out = subprocess.check_output(["gsettings", "get", SCHEMA, "dock-items"], text=True)
+    return ast.literal_eval(out)
+
+
+def set_items(items):
+    subprocess.run(["gsettings", "set", SCHEMA, "dock-items", str(items)])
+
+
+def parse_desktop(path):
+    d = {}
+    try:
+        with open(path, encoding="utf-8", errors="ignore") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                if line.startswith("["):
+                    if line != "[Desktop Entry]" and d:
+                        break  # dừng ở nhóm action đầu tiên
+                    continue
+                if "=" in line:
+                    k, v = line.split("=", 1)
+                    d.setdefault(k, v)
+    except OSError:
+        pass
+    return d
+
+
+pinned = {x[:-9] for x in get_items()}  # bỏ đuôi ".dockitem"
+
+apps = {}  # appid -> (name, icon, path)
+for d in APPDIRS:
+    for f in sorted(glob.glob(f"{d}/*.desktop")):
+        appid = os.path.basename(f)[:-8]
+        if appid in apps:
+            continue
+        info = parse_desktop(f)
+        if info.get("Type") != "Application":
+            continue
+        if info.get("NoDisplay", "").lower() == "true" or info.get("Hidden", "").lower() == "true":
+            continue
+        apps[appid] = (info.get("Name", appid), info.get("Icon", "application-x-executable"), f)
+
+items = list(apps.items())
+pin_list = sorted((a for a in items if a[0] in pinned), key=lambda x: x[1][0].lower())
+oth_list = sorted((a for a in items if a[0] not in pinned), key=lambda x: x[1][0].lower())
+ordered = pin_list + oth_list
+
+rows, order = [], []
+for appid, (name, icon, _path) in ordered:
+    marker = "✓  " if appid in pinned else ""
+    rows.append(f"{marker}{name}\0icon\x1f{icon}")
+    order.append(appid)
+
+cmd = ["rofi", "-dmenu", "-i", "-format", "i", "-p", "Dock", "-show-icons",
+       "-mesg", "Enter = pin vào Dock   ·   ✓ = đang pin (chọn lại để gỡ)"]
+if os.path.exists(THEME):
+    cmd += ["-theme", THEME]
+
+try:
+    res = subprocess.run(cmd, input="\n".join(rows), text=True, capture_output=True)
+except FileNotFoundError:
+    sys.exit("rofi chưa được cài.")
+
+sel = res.stdout.strip()
+if sel == "":
+    sys.exit(0)
+
+appid = order[int(sel)]
+name, _icon, path = apps[appid]
+dockitem = f"{LAUNCHERS}/{appid}.dockitem"
+items = get_items()
+
+if appid in pinned:
+    try:
+        os.remove(dockitem)
+    except FileNotFoundError:
+        pass
+    items = [x for x in items if x != f"{appid}.dockitem"]
+    action = "Đã gỡ pin"
+else:
+    with open(dockitem, "w") as fh:
+        fh.write(f"[PlankDockItemPreferences]\nLauncher=file://{path}\n")
+    item = f"{appid}.dockitem"
+    if item not in items:
+        pos = items.index("trash.dockitem") if "trash.dockitem" in items else len(items)
+        items.insert(pos, item)
+    action = "Đã pin"
+
+set_items(items)
+subprocess.run(["pkill", "-x", "plank"])
+time.sleep(1)
+subprocess.Popen(["plank"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+subprocess.run(["notify-send", "Dock", f"{action}: {name}"], stderr=subprocess.DEVNULL)

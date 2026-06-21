@@ -1,0 +1,52 @@
+/clipman/tweaks/never-confirm-history-clear   false
+/configver                                    2
+/panels                                       [1]
+/panels/panel-1/background-rgba               [0.750000,0.250000,0.250000,0.000000]
+/panels/panel-1/background-style              0
+/panels/panel-1/enable-struts                 true
+/panels/panel-1/length                        100
+/panels/panel-1/mode                          0
+/panels/panel-1/nrows                         1
+/panels/panel-1/plugin-ids                    [20,30,31,32,6,1]
+/panels/panel-1/position                      p=2;x=1280;y=0
+/panels/panel-1/position-locked               true
+/panels/panel-1/size                          28
+/plugins/plugin-1                             clock
+/plugins/plugin-1/command                     orage
+/plugins/plugin-1/digital-format              %a %d %b  %H:%M
+/plugins/plugin-1/digital-layout              3
+/plugins/plugin-1/digital-time-font           Sans 10
+/plugins/plugin-1/digital-time-format         %a %b %-d   %-l:%M %p
+/plugins/plugin-1/mode                        2
+/plugins/plugin-2                             docklike
+/plugins/plugin-20                            whiskermenu
+/plugins/plugin-20/button-icon                /home/tomvu/.local/share/icons/apple-logo.svg
+/plugins/plugin-20/button-title               
+/plugins/plugin-20/command-switchuser         xfce4-session-logout --switch-user
+/plugins/plugin-20/favorites                  [xfce4-run.desktop,firefox.desktop,thunar.desktop,conky-toggle.desktop,Quick_System_Info.desktop,mx-tools.desktop,mx-packageinstaller.desktop,Help.desktop,xfce4-terminal.desktop,libreoffice-startcenter.desktop,xfce4-taskmanager.desktop]
+/plugins/plugin-20/favorites-in-recent        true
+/plugins/plugin-20/hover-switch-category      true
+/plugins/plugin-20/launcher-icon-size         1
+/plugins/plugin-20/menu-height                550
+/plugins/plugin-20/menu-width                 470
+/plugins/plugin-20/recent                     [xfce4-taskmanager.desktop,xfce4-file-manager.desktop,xfce-settings-manager.desktop,xfce4-terminal-emulator.desktop,mx-tools.desktop,mx-welcome.desktop]
+/plugins/plugin-20/show-button-title          false
+/plugins/plugin-20/show-command-switchuser    true
+/plugins/plugin-30                            separator
+/plugins/plugin-30/expand                     true
+/plugins/plugin-30/style                      0
+/plugins/plugin-31                            pulseaudio
+/plugins/plugin-31/enable-keyboard-shortcuts  true
+/plugins/plugin-32                            power-manager-plugin
+/plugins/plugin-4                             pager
+/plugins/plugin-4/miniature-view              true
+/plugins/plugin-4/rows                        2
+/plugins/plugin-6                             systray
+/plugins/plugin-6/icon-size                   0
+/plugins/plugin-6/known-items                 [Strawberry,flameshot,mx-updater,mx-usb-unmounter]
+/plugins/plugin-6/known-legacy-items          [ethernet network connection “wired connection 1” active,networkmanager applet,clipman]
+/plugins/plugin-6/names-hidden                [flameshot,mx-updater,mx-usb-unmounter,clipman,apt-notifier.py,fbxkb]
+/plugins/plugin-6/names-ordered               [apt-notifier.py,yad,xfce4-power-manager,networkmanager applet,clipit]
+/plugins/plugin-6/names-visible               [networkmanager applet,volumeicon,xfce terminal,blueman-applet,apt-notifier.py,clipman,xfce4-power-manager,fbxkb]
+/plugins/plugin-6/show-frame                  false
+/plugins/plugin-6/size-max                    24
