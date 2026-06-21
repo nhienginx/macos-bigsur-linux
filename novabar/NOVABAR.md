@@ -89,6 +89,18 @@ Key changes vs upstream: SF Pro font; whiter, more translucent background `rgba(
 **Gotcha:** the binary looks for CSS in `/usr/share/novaos/` but `ninja install` (prefix `/usr/local`) puts it in `/usr/local/share/novaos/`. The fallback path is `<cwd>/data/`, so launch NovaBar from `~/NovaBar` so it finds `data/novaos-light.css`. The autostart `Exec` is patched to `cd "$HOME/NovaBar"; exec "$HOME/NovaBar/build/novabar"` and use the **rebuilt** binary (which has the bigger logo + light popups).
 Permanent alternative (needs sudo): `sudo ln -s /usr/local/share/novaos /usr/share/novaos && sudo ninja -C ~/NovaBar/build install`.
 
+### 4f. Apple-menu power actions (Sleep / Restart / Shut Down) on SysVinit
+**Root cause (non-obvious):** the Apple-logo menu hard-codes `systemctl suspend/reboot/poweroff` in `src/logomenu/logomenu.vala`. MX Linux boots with **SysVinit** (PID 1 = `/usr/lib/sysvinit/init`, not systemd), so every `systemctl <power>` call dies with *"System has not been booted with systemd as init system (PID 1)"*. `run_command()` swallows the error in a `catch {}`, so clicking Restart / Shut Down does **nothing** at all. Fix: route through XFCE's session-logout helper, which talks to elogind/ConsoleKit + polkit correctly (same backend the XFCE logout button uses):
+```bash
+sed -i \
+  -e 's|run_command("systemctl suspend")|run_command("xfce4-session-logout --suspend")|' \
+  -e 's|run_command("systemctl reboot")|run_command("xfce4-session-logout --reboot")|' \
+  -e 's|run_command("systemctl poweroff")|run_command("xfce4-session-logout --halt")|' \
+  ~/NovaBar/src/logomenu/logomenu.vala
+ninja -C ~/NovaBar/build
+```
+(`Lock Screen` → `xflock4` and `Log Out...` → `xfce4-session-logout` already work as-is.)
+
 ---
 
 ## 5. Apply everything at once / Áp dụng nhanh
@@ -99,7 +111,7 @@ mkdir -p ~/.config/novabar ~/.local/share/icons
 cp apple-logo-black.svg ~/.local/share/icons/
 cp theme logo_icon ~/.config/novabar/
 cp novaos-light.css ~/NovaBar/data/novaos-light.css
-# (apply the source patches in 4b + 4c, then) rebuild:
+# (apply the source patches in 4b + 4c + 4f, then) rebuild:
 ninja -C ~/NovaBar/build
 # relaunch from the repo dir:
 pkill -x novabar; cd ~/NovaBar; GTK_MODULES=appmenu-gtk-module ~/NovaBar/build/novabar &
@@ -110,4 +122,5 @@ pkill -x novabar; cd ~/NovaBar; GTK_MODULES=appmenu-gtk-module ~/NovaBar/build/n
 - **Calendar / Control Center black-on-black** → popup colors are hard-coded in source; apply patch 4c and rebuild.
 - **Bar is dark even with `theme=light`** → CSS not found; run NovaBar from `~/NovaBar` (4e).
 - **Apple logo too small** → patch 4b (16→20) and rebuild.
+- **Apple menu → Shut Down / Restart / Sleep does nothing** → menu hard-codes `systemctl` but MX boots SysVinit; apply patch 4f (use `xfce4-session-logout`) and rebuild.
 - **Two top bars / global menu not working** → xfce4-panel still running; do step 2.
