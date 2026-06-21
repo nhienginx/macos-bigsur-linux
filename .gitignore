@@ -1,0 +1,24 @@
+# Build / cache artifacts (scripts download .deb etc. into ~/.cache — outside the
+# repo — but ignore any that land here just in case)
+*.deb
+*.tmp
+*.log
+build/
+.cache/
+
+# Compiled helpers (e.g. plank-noglow.c built locally)
+*.o
+*.so
+plank-noglow
+
+# Backups created by scripts / editors
+*.bak
+*~
+*.orig
+autostart-backup-*/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

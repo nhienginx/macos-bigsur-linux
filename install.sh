@@ -311,6 +311,9 @@ Installed:
 Next steps:
   * Log out and back in to finalize the cursor theme and let some apps pick
     up the new GTK theme and fonts.
+  * Optional: run ./optimize.sh to make things lighter & smoother (trims
+    autostart, enables zram, tunes memory) — recommended on low-RAM machines
+    or inside VirtualBox. See docs/optimization.md.
 EOF
 
 if ((WITH_GLOBAL_MENU)); then
